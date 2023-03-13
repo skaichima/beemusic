@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/beemusic/static/css/main.fa96b140.css",
+    "main.js": "/beemusic/static/js/main.63a456fe.js",
+    "static/js/787.dcecc508.chunk.js": "/beemusic/static/js/787.dcecc508.chunk.js",
+    "index.html": "/beemusic/index.html",
+    "main.fa96b140.css.map": "/beemusic/static/css/main.fa96b140.css.map",
+    "main.63a456fe.js.map": "/beemusic/static/js/main.63a456fe.js.map",
+    "787.dcecc508.chunk.js.map": "/beemusic/static/js/787.dcecc508.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fa96b140.css",
+    "static/js/main.63a456fe.js"
+  ]
+}
