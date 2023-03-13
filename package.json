@@ -1,5 +1,6 @@
 {
   "name": "bee-music",
+  "homepage": "http://skaichima.github.io/beemusic",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
