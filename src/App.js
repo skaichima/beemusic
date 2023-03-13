@@ -5,7 +5,7 @@ import Data from "./data";
 
 const CLIENT_ID = "fcd5e78886aa46c7ad8c9f179bd2a90f";
 const CLIENT_SECRET = "50fe3290887246deaf6c6457a582f0f5";
-const REDIRECT_URI = "http://localhost:3000/";
+const REDIRECT_URI = "https://skaichima.github.io/beemusic/";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 
@@ -17,8 +17,9 @@ function App() {
   const [userData, setUserData] = useState({});
   const [userArtists, setUserArtists] = useState({});
   const [userSongs, setUserSongs] = useState([]);
-
+  
   useEffect(() => {
+    getClientInfo();
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
 
@@ -35,6 +36,7 @@ function App() {
     
     setAccessToken(token);
   }, []);
+
 
   const search = async () => {
     const artistParameters = {
@@ -78,14 +80,12 @@ function App() {
         .then((info) => {
           setUserSongs(info.tracks.items);
         });
-    }
-  };
-  window.onload = getClientInfo();
+      }
+    };
   const logOut = () => {
     setAccessToken("");
     window.localStorage.removeItem("token");
   };
-
   // console.log(songs)
 
   return (
