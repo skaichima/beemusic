@@ -17,9 +17,8 @@ function App() {
   const [userData, setUserData] = useState({});
   const [userArtists, setUserArtists] = useState({});
   const [userSongs, setUserSongs] = useState([]);
-  
+
   useEffect(() => {
-    getClientInfo();
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
 
@@ -33,60 +32,46 @@ function App() {
       window.location.hash = "";
       window.localStorage.setItem("token", token);
     }
-    
     setAccessToken(token);
   }, []);
 
-
   const search = async () => {
-    const artistParameters = {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + accessToken,
-        "Content-Type": "application/json",
-      },
-    };
-    const returnedSongs = await fetch(
-      "https://api.spotify.com/v1/search?q=" +
-        searchInput +
-        "&type=track&include_external=audio",
-      artistParameters
-    )
-      .then((res) => res.json())
-      .then((info) => {
-        setSongs(info.tracks.items);
-      });
-    console.log(returnedSongs);
+    if(!searchInput || !accessToken) return
+    const request = await fetch("https://api.spotify.com/v1/search?q=" + searchInput + "&type=track&include_external=audio", getRequestParams())
+    const response = await request.json()
+    setSongs(response.tracks.items)
   };
-  const getClientInfo = async () => {
-    if (accessToken) {
-      const parameters = {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + accessToken,
-          "Content-Type": "application/json",
-        },
-      };
-      const userInfo = await fetch("https://api.spotify.com/v1/me", parameters)
-        .then((res) => res.json())
-        .then((data) => {
-          setUserData(data);
-        });
-      const returnedSongs = await fetch(
-        "https://api.spotify.com/v1/search?q=drake&type=track&include_external=audio",
-        parameters
-      )
-        .then((res) => res.json())
-        .then((info) => {
-          setUserSongs(info.tracks.items);
-        });
-      }
-    };
+
+  const getRequestParams = (method = "GET") => ({
+    method,
+    headers: {
+      Authorization: "Bearer " + accessToken,
+      "Content-Type": "application/json",
+    },
+  });
+
+  const getUserSongs = async () => {
+    const request = await fetch( "https://api.spotify.com/v1/search?q=drake&type=track&include_external=audio", getRequestParams())
+    const response = await request.json()
+   setUserSongs(response.tracks.items);
+  }
+
+  const getUserData = async () => {
+    const request = await fetch("https://api.spotify.com/v1/me", getRequestParams())
+    const response = await request.json()
+    setUserData(response);
+  }
+
   const logOut = () => {
     setAccessToken("");
     window.localStorage.removeItem("token");
   };
-  // console.log(songs)
+
+  useEffect(() => {
+    if(!accessToken) return
+    getUserSongs()
+    getUserData()
+  }, [accessToken])
 
   return (
     <div className="app">
